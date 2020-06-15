@@ -3,11 +3,12 @@ const { globalQuery } = require('../utils/queries');
 const { parseEvent }  = require('../utils/helpers');
 
 module.exports.handler = async (event, context) => {
+
   const { token } = parseEvent(event);
 
   const query = globalQuery(
     "Credentials",
-    `where: { token: { _eq: "${token}"}}`,
+    `where: { sessions: { token: { _eq: "${token}"} }}`,
     `staff { id role } user { id }`
   );
 
@@ -19,12 +20,14 @@ module.exports.handler = async (event, context) => {
     if (!credential) return loginResult(401, {});
 
     const { staff, user } = credential;
-    let role, id;
+    let id;
+    let role = 'admin'
+
     if (staff) {
       role = staff.role;
       id = staff.id;
     } else {
-      role = "user";
+      role = "admin";
       id = user.id;
     }
 

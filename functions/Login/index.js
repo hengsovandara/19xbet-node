@@ -5,28 +5,45 @@ const uuid = require('uuid/v4')
 module.exports.handler = async (event) => {
 
   let { body } = parseEvent(event);
-  let { userName, password } = body;
+  let { email, phoneNumber = '', password } = body;
 
   try {
-    validator(userName, password);
+    // validator(userName, password, phoneNumber);
+    phoneNumber = phoneNumber.replace(/^0/, '')
 
-    const token = uuid();
+    let query = `
+      query{
+        Credentials(where: { _and: [{ password:{ _eq: "${password}"} }, {
+          _or:[{email: { _eq: "${email}"}}, { phoneNumber:{ _eq:"${phoneNumber}"}}]
+        }]}){
+          id
+        }
+      }
+    `
 
-    const query = `
+    const {
+      Credentials: [credentials] 
+    } = await getRequestAct("GQL", { query });
+
+    if(!credentials.id)
+      throw { message: "unauthorised", statusCode: 401}
+
+    query = `
       mutation{
-        update_Credentials(_set: { token: "${token}"} where: { _and: [{userName: {_eq:"${userName}"}}, { password: { _eq: "${password}"}}]}){
-          affected_rows
+        insert_Sessions(objects: { credentialId: "${credentials.id}"}){
+          returning { token }
         }
       }
     `;
 
     const {
-      update_Credentials: { affected_rows  }
+      insert_Sessions: { returning  }
     } = await getRequestAct("GQL", { query });
 
-    if (affected_rows > 0) return success({ token });
+    if (!returning.length) return fail({message: 'unauthorised', statusCode: 401})
+    const { token } = returning[0] || {}
 
-    return fail({message: 'unauthorised', statusCode: 401})
+    return success({ token });
   } catch (error) {
     return error
   }
@@ -35,8 +52,8 @@ module.exports.handler = async (event) => {
 function validator(username, password) {
   switch (undefined) {
     case username:
-      throw fail({"username": "username cannot be blank."}, {}, 401)
+      throw fail({"username": "username cannot be blank."}, 401)
     case password:
-      throw fail({"password": "password cannot be blank."}, {}, 401)
+      throw fail({"password": "password cannot be blank."}, 401)
   }
 }

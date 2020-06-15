@@ -19,9 +19,9 @@ services:
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_AUTH_HOOK: http://192.168.88.231:8081/api/auth
+      HASURA_GRAPHQL_AUTH_HOOK: http://172.16.0.155:8081/api/auth
       HASURA_GRAPHQL_AUTH_HOOK_MODE: POST
-      HASURA_GRAPHQL_ADMIN_SECRET: 247kh
+      HASURA_GRAPHQL_ADMIN_SECRET: pingkh
   # serverless-node:
   #   image: node-api:latest
   #   ports:

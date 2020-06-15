@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "serverless offline -P 8080 -o 0.0.0.0",
+    "start": "serverless offline -P 8081 -o 0.0.0.0",
     "dev": "serverless offline -P 8081 -o 0.0.0.0",
     "cron": "serverless offline start",
     "test": "sls invoke test -f",
