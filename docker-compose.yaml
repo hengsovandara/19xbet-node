@@ -1,0 +1,34 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    container_name: docker-postgres-247kh
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+  graphql-engine-247kh:
+    image: hasura/graphql-engine:v1.2.2
+    ports:
+    - "8085:8080"
+    depends_on:
+    - "postgres"
+    container_name: hasura-247kh
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_AUTH_HOOK: http://192.168.88.231:8081/api/auth
+      HASURA_GRAPHQL_AUTH_HOOK_MODE: POST
+      HASURA_GRAPHQL_ADMIN_SECRET: 247kh
+  # serverless-node:
+  #   image: node-api:latest
+  #   ports:
+  #   - "8081:8080"
+  #   container_name: node-psardermkor
+  #   restart: always
+  #   environment:
+  #     HASURA_ENDPOINT: http://graphql-engine-gotifo-test-new:8080/v1/graphql
+volumes:
+  db_data:

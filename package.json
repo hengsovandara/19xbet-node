@@ -1,0 +1,46 @@
+{
+  "name": "GOTIFO-node",
+  "version": "0.0.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serverless offline -P 8080 -o 0.0.0.0",
+    "dev": "serverless offline -P 8081 -o 0.0.0.0",
+    "cron": "serverless offline start",
+    "test": "sls invoke test -f",
+    "docs": "serverless openapi generate -o ./functions/Documentation/documentation.json -f json",
+    "watch": "npm start & nodemon --watch /serverless.yml --watch /functions/Documentation/serverless.docs.yml --exec npm run docs",
+    "logs": "auto-changelog -p && git add CHANGELOG.md && git commit -m 'Changelog generated'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rotati/GOTIFO-node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rotati/GOTIFO-node/issues"
+  },
+  "homepage": "https://github.com/rotati/GOTIFO-node#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "firebase-admin": "^8.9.0",
+    "firebase-functions": "^3.3.0",
+    "geolib": "^3.2.1",
+    "hasu": "0.0.29",
+    "lodash": "^4.17.15",
+    "mailgun-js": "^0.22.0",
+    "moment": "^2.24.0",
+    "node-cron": "^2.0.3",
+    "serverless": "^1.48.2",
+    "serverless-offline": "^5.8.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "auto-changelog": "^1.14.1",
+    "nodemon": "^1.19.1",
+    "release": "^6.0.1",
+    "serverless-docs": "^1.1.0"
+  }
+}

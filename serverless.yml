@@ -1,0 +1,26 @@
+service: Psardermkor-Node
+provider:
+  name: aws
+  runtime: nodejs10.x
+functions:
+  auth:
+    handler: functions/Auth/index.handler
+    events:
+      - http:
+          path: api/auth
+          method: post
+          documentation: '${self:custom.endpoints.auth}'
+  auth/login:
+    handler: functions/Login/index.handler
+    events:
+      - http:
+          path: api/auth/login
+          method: post
+  user/signInUp:
+    handler: functions/Users/signInUp.handler
+    events:
+      - http:
+          path: api/user/auth
+          method: post
+plugins:
+  - serverless-offline
