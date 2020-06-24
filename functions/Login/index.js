@@ -8,8 +8,8 @@ module.exports.handler = async (event) => {
   let { email, phoneNumber = '', password } = body;
 
   try {
-    // validator(userName, password, phoneNumber);
-    phoneNumber = phoneNumber.replace(/^0/, '')
+    phoneNumber = phoneNumber && phoneNumber.replace(/^0/, '')
+    validator(email, password, phoneNumber);
 
     let query = `
       query{
@@ -49,11 +49,11 @@ module.exports.handler = async (event) => {
   }
 }
 
-function validator(username, password) {
-  switch (undefined) {
-    case username:
-      throw fail({"username": "username cannot be blank."}, 401)
-    case password:
-      throw fail({"password": "password cannot be blank."}, 401)
-  }
+function validator(email, password, phoneNumber) {
+  if(!phoneNumber && !email)
+    throw fail({"password": "password cannot be blank."}, 401)
+
+  if(!password)
+    throw fail({"password": "password cannot be blank."}, 401)
+
 }

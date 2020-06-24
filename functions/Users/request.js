@@ -1,12 +1,11 @@
-const { fail, success, getRequestAct, login } = require('hasu')
+const { fail, success, getRequestAct } = require('hasu')
 const { parseEvent, validatePresence } = require("../utils/helpers");
 const uuid = require('uuid/v4')
 
 module.exports.handler = async (event) => {
 
-  let { body } = parseEvent(event);
-  let { email, phoneNumber, password, passwordConfirmation } = body;
-  phoneNumber = phoneNumber && phoneNumber.replace(/^0/, '')
+  let { token, body } = parseEvent(event);
+ b
   try {
     let token = ''
     switch (true) {
@@ -23,55 +22,8 @@ module.exports.handler = async (event) => {
   }
 }
 
-const checkAndCreateUser = async ({ body = {}, variables, constraint = 'firebaseUID', index = 1 }) => {
-
-  const { uid, displayName, email, phoneNumber, photoURL } = body;
-  const token = uuid();
-  const query = `
-    mutation($values: [Credentials_insert_input!]!){
-      insert_Credentials(objects: $values on_conflict:{
-        constraint: Credentials_${constraint}_key
-        update_columns: [token ${constraint}]
-      }){ returning{ token } }
-    }
-  `;
-
-  variables = variables || {
-    values: {
-      firebaseUID: uid, email, token,
-      user: {
-        data: { name: displayName, email, phone: phoneNumber, photoURL, firebaseUID: uid },
-        on_conflict: {
-          constraint: `Users_${constraint}_key`,
-          update_columns: ["firebaseUID"]
-        }
-      }
-    }
-  };
-
-  try {
-
-    const {
-      insert_Credentials: { returning }
-    } = await getRequestAct("GQL", { query, variables });
-
-    if (returning.length) return returning[0].token;
-    throw "Oops! sorry can not sign-in.";
-  } catch (error) {
-    index += 1
-    if (index > 3)
-      throw error
-
-    variables["values"]["user"]["on_conflict"] = {
-      constraint: `Users_email_key`,
-      update_columns: ["firebaseUID"]
-    }
-
-    return await checkAndCreateUser({ body, variables, constraint: 'email', index })
-  }
-};
-
 const createCustomeUser = async body => {
+  const token = uuid();
   const { name, phone, email, password, passwordConfirmation } = body;
   let phoneNumber = body.phoneNumber && body.phoneNumber.replace(/^0/, '')
   const { isValid, errors } = validatePresence({
@@ -118,7 +70,7 @@ const createCustomeUser = async body => {
 const userLogin = async({ email, phoneNumber, password}) => {
   if((!email && !phoneNumber) || !password)
     throw {message: "email or password can not be empty"}
-
+  console.log("asdsadsadsa")
   try{
     let query = `
       query{

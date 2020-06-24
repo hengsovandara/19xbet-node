@@ -3561,10 +3561,10 @@ hash-stream-validation@^0.2.2:
   dependencies:
     through2 "^2.0.0"
 
-hasu@0.0.29:
-  version "0.0.29"
-  resolved "https://registry.yarnpkg.com/hasu/-/hasu-0.0.29.tgz#5fc65997e75d5303bf43be554e8ffab652664146"
-  integrity sha512-T9p/AO/h6KMee/x/O4JCoBlHQ84gEomntaFGqnG0N3UQs/604l10cI0ehWbRbQMY8etBxASXjEYyP1FcoWRghA==
+hasu@0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/hasu/-/hasu-0.0.31.tgz#a5f9061b81bb60fea85f755f126e79659bdf44b8"
+  integrity sha512-sHO/ffxBloFx/7LUwNQFMDD0Mt+yvttMeys5N4jniur1ubtanr/g1NZYWeKIAtQjhTd2ww/2Ke/EhXwQ2VRJWw==
   dependencies:
     aws-s3 "^2.0.4"
     aws-sdk "^2.486.0"

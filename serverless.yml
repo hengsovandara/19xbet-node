@@ -22,5 +22,11 @@ functions:
       - http:
           path: api/user/auth
           method: post
+  user/request:
+    handler: functions/Users/request.handler
+    events:
+      - http:
+          path: api/user/request
+          method: post
 plugins:
   - serverless-offline
