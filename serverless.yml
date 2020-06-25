@@ -28,5 +28,11 @@ functions:
       - http:
           path: api/user/request
           method: post
+  notification:
+    handler: functions/Notification/sendNotification.handler
+    events:
+      - http:
+          path: api/notify
+          method: post
 plugins:
   - serverless-offline

@@ -1,32 +1,47 @@
-const admin = require('firebase-admin')
-const serviceAccount = require('../psardermkor-kh-firebase-adminsdk')
-module.exports.sendNotification = sendNotification
+const { parseEvent } = require('../utils/helpers')
+const { success, fail, getRequestAct } = require('hasu')
 
-async function sendNotification({ tokens = ['asdsa'], data, notification}) {
+const BOT_TOKEN = '1176212955:AAHEP1J5wGBA1-cWuIkIX9IfRg4w5rYBxDs'
+const CHAT_ID = '668438440'
 
+module.exports.handler = async event => {
   try {
-    if (!admin.apps.length) {
-      admin.initializeApp({ credential: admin.credential.cert(serviceAccount) })
+    const { body: { event: { data: { new: newData } }, table: { name }} } = parseEvent(event)
+    let url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}`
+    let text = ''
+    switch (name) {
+      case 'Users':
+        text = "*អតិថិជនចុះឈ្មោះ*\n\n" + "ឈ្មោះ: " + newData.name + "\n\n" + "លេខទូរស័ព្ទ: 0" + newData.phoneNumber + "\n\n" + "-----------------------------------------------------"
+        break;
+      default:
+        const { user } = await getUserInfo(newData.userId)
+        const type = newData.type === "cashOut" ? "ដកប្រាក់" : "ដាក់ប្រាក់"
+        text = "-------------------------------------------------" + "\n\n" + 
+        "អតិថិជន" + type + "\n\n" + 
+        "លេខ: " + newData.index + "\n\n" + 
+        "ឈ្មោះ: " + user.name + "\n\n" + 
+        "លេខទូរស័ព្ទ: 0" + user.phoneNumber + "\n\n" + 
+        "ចំនួនប្រាក់: " + newData.amount + "\n\n" + 
+        "តាមវិធី: " + newData.method + "\n\n" + 
+        "-------------------------------------------------"
+        break;
     }
+        
+    url += `&text=${encodeURI(text)}&parse_mode=Markdown`
 
-    var message = {
-      notification,
-      data,
-      tokens
-    };
+    const newResult =  await getRequestAct("GET", {url}).then(res => res).catch(error => {throw error})
 
-    admin.messaging().sendMulticast(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-        throw error
-      });
-    return true
+    return success(newResult)
   } catch (error) {
     console.log(error)
-    return false
+    fail({ message: error })
   }
+}
+
+async function getUserInfo(userId){
+  const query = `
+    query{ user: Users_by_pk(id: "${userId}"){ name phoneNumber } }
+  `
+
+  return getRequestAct("GQL", {query})
 }
