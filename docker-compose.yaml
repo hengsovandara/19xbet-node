@@ -6,7 +6,7 @@ services:
     volumes:
     - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_PASSWORD: pingkh
   graphql-engine:
     image: hasura/graphql-engine:v1.2.2
     depends_on:
@@ -14,7 +14,7 @@ services:
     container_name: hasura-247kh
     restart: always
     environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:pingkh@postgres:5432/postgres
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_AUTH_HOOK: http://serverless-node:8080/api/auth
       HASURA_GRAPHQL_AUTH_HOOK_MODE: POST
