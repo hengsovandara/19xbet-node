@@ -1,17 +1,14 @@
-version: '3'
+version: '3.6'
 services:
   postgres:
     image: postgres:12
     restart: always
     volumes:
     - db_data:/var/lib/postgresql/data
-    container_name: docker-postgres-247kh
     environment:
-      POSTGRES_HOST_AUTH_METHOD: "trust"
-  graphql-engine-247kh:
+      POSTGRES_PASSWORD: postgrespassword
+  graphql-engine:
     image: hasura/graphql-engine:v1.2.2
-    ports:
-    - "8085:8080"
     depends_on:
     - "postgres"
     container_name: hasura-247kh
@@ -23,16 +20,31 @@ services:
       HASURA_GRAPHQL_AUTH_HOOK_MODE: POST
       HASURA_GRAPHQL_ADMIN_SECRET: pingkh
       NOTIFICATION_NODE: http://serverless-node:8080/api/notify
+    command:
+    - graphql-engine
+    - serve
   serverless-node:
     image: node-api:latest
     ports:
-    - "8086:8080"
+    - "8081:8080"
     container_name: node-psardermkor
     restart: always
     environment:
-      HASURA_ENDPOINT: http://graphql-engine-247kh:8080/v1/graphql
+      HASURA_ENDPOINT: http://graphql-engine/v1/graphql
       HASURA_ACCESSKEY: pingkh
       BOT_TOKEN: 1135123290:AAHez7pFE4QX04VO_nBxqtNAlyuCs9EZn8Y
       CHAT_ID: 668438440
+  caddy:
+    image: abiosoft/caddy:0.11.0
+    depends_on:
+    - "graphql-engine"
+    restart: always
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - ./Caddyfile:/etc/Caddyfile
+    - caddy_certs:/root/.caddy
 volumes:
   db_data:
+  caddy_certs:
