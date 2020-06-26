@@ -19,16 +19,20 @@ services:
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_AUTH_HOOK: http://172.16.0.155:8081/api/auth
+      HASURA_GRAPHQL_AUTH_HOOK: http://serverless-node:8080/api/auth
       HASURA_GRAPHQL_AUTH_HOOK_MODE: POST
       HASURA_GRAPHQL_ADMIN_SECRET: pingkh
-  # serverless-node:
-  #   image: node-api:latest
-  #   ports:
-  #   - "8081:8080"
-  #   container_name: node-psardermkor
-  #   restart: always
-  #   environment:
-  #     HASURA_ENDPOINT: http://graphql-engine-gotifo-test-new:8080/v1/graphql
+      NOTIFICATION_NODE: http://serverless-node:8080/api/notify
+  serverless-node:
+    image: node-api:latest
+    ports:
+    - "8086:8080"
+    container_name: node-psardermkor
+    restart: always
+    environment:
+      HASURA_ENDPOINT: http://graphql-engine-247kh:8080/v1/graphql
+      HASURA_ACCESSKEY: pingkh
+      BOT_TOKEN: 1135123290:AAHez7pFE4QX04VO_nBxqtNAlyuCs9EZn8Y
+      CHAT_ID: 668438440
 volumes:
   db_data:

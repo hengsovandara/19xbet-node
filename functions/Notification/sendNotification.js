@@ -1,8 +1,6 @@
 const { parseEvent } = require('../utils/helpers')
 const { success, fail, getRequestAct } = require('hasu')
-
-const BOT_TOKEN = '1176212955:AAHEP1J5wGBA1-cWuIkIX9IfRg4w5rYBxDs'
-const CHAT_ID = '668438440'
+const { BOT_TOKEN, CHAT_ID  } = require('../../config')
 
 module.exports.handler = async event => {
   try {
