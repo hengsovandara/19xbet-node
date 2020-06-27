@@ -10,24 +10,28 @@ functions:
           path: api/auth
           method: post
           documentation: '${self:custom.endpoints.auth}'
+          cors: true
   auth/login:
     handler: functions/Login/index.handler
     events:
       - http:
           path: api/auth/login
           method: post
+          cors: true
   user/signInUp:
     handler: functions/Users/signInUp.handler
     events:
       - http:
           path: api/user/auth
           method: post
+          cors: true
   user/request:
     handler: functions/Users/request.handler
     events:
       - http:
           path: api/user/request
           method: post
+          cors: true
   notification:
     handler: functions/Notification/sendNotification.handler
     events:
