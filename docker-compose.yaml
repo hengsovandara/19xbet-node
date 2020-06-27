@@ -4,7 +4,7 @@ services:
     image: postgres:10.5
     restart: always
     volumes:
-    - db_data:/l/lib/postgres10/data
+    - db_data:/var/lib/postgres10/data
   graphql-engine:
     image: hasura/graphql-engine:v1.2.2
     depends_on:
@@ -28,7 +28,7 @@ services:
     container_name: node-psardermkor
     restart: always
     environment:
-      HASURA_ENDPOINT: http://graphql-engine:8080/v1/graphql
+      HASURA_ENDPOINT: http://graphql-engine/v1/graphql
       HASURA_ACCESSKEY: pingkh
       BOT_TOKEN: 1135123290:AAHez7pFE4QX04VO_nBxqtNAlyuCs9EZn8Y
       CHAT_ID: 668438440
