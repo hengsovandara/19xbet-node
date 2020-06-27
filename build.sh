@@ -1,7 +1,6 @@
 !#/bin/bash
 
 git pull
-cp docker-compose.yaml /etc/hasura/docker-compose.yaml
 docker system prune -f
 docker build . -t node-api:latest
 cd /etc/hasura
