@@ -1,0 +1,90 @@
+- args:
+    tables:
+    - array_relationships:
+      - name: sessions
+        using:
+          foreign_key_constraint_on:
+            column: credentialId
+            table:
+              name: Sessions
+              schema: public
+      object_relationships:
+      - name: staff
+        using:
+          foreign_key_constraint_on: staffId
+      - name: user
+        using:
+          foreign_key_constraint_on: userId
+      table:
+        name: Credentials
+        schema: public
+    - object_relationships:
+      - name: credential
+        using:
+          foreign_key_constraint_on: credentialId
+      table:
+        name: Sessions
+        schema: public
+    - object_relationships:
+      - name: credential
+        using:
+          manual_configuration:
+            column_mapping:
+              id: staffId
+            remote_table:
+              name: Credentials
+              schema: public
+      table:
+        name: Staffs
+        schema: public
+    - event_triggers:
+      - definition:
+          enable_manual: true
+          insert:
+            columns: '*'
+        name: userRequest
+        retry_conf:
+          interval_sec: 10
+          num_retries: 0
+          timeout_sec: 60
+        webhook: http://192.168.28.65:8080/api/notify
+      object_relationships:
+      - name: user
+        using:
+          foreign_key_constraint_on: userId
+      table:
+        name: Transactions
+        schema: public
+    - array_relationships:
+      - name: transactions
+        using:
+          foreign_key_constraint_on:
+            column: userId
+            table:
+              name: Transactions
+              schema: public
+      event_triggers:
+      - definition:
+          enable_manual: true
+          insert:
+            columns: '*'
+        name: userRegister
+        retry_conf:
+          interval_sec: 10
+          num_retries: 0
+          timeout_sec: 60
+        webhook: http://192.168.28.65:8080/api/notify
+      object_relationships:
+      - name: credential
+        using:
+          manual_configuration:
+            column_mapping:
+              id: userId
+            remote_table:
+              name: Credentials
+              schema: public
+      table:
+        name: Users
+        schema: public
+    version: 2
+  type: replace_metadata
