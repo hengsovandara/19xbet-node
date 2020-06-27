@@ -5,7 +5,7 @@ const uuid = require('uuid/v4')
 module.exports.handler = async (event) => {
 
   let { token, body } = parseEvent(event);
- b
+
   try {
     let token = ''
     switch (true) {
