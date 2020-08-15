@@ -6,6 +6,12 @@ module.exports.handler = async (event, context) => {
 
   const { token } = parseEvent(event);
 
+  if(!token)
+    return loginResult(200, {
+      "X-Hasura-User-Id": "1234567890",
+      "X-Hasura-Role": 'anonymous'
+    });
+
   const query = globalQuery(
     "Credentials",
     `where: { sessions: { token: { _eq: "${token}"} }}`,
@@ -37,6 +43,9 @@ module.exports.handler = async (event, context) => {
     });
   } catch (error) {
     console.log("error", error);
-    return loginResult(401, {});
+    return loginResult(200, {
+      "X-Hasura-User-Id": "1234567890",
+      "X-Hasura-Role": 'anonymous'
+    });
   }
 };
