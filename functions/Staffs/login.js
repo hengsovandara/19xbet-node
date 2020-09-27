@@ -1,5 +1,6 @@
 const { fail, success, getRequestAct, login }          = require('hasu')
 const { parseEvent } = require("../utils/helpers");
+const uuid = require('uuid/v4')
 
 module.exports.handler = async (event) => {
 
@@ -14,12 +15,14 @@ module.exports.handler = async (event) => {
       query{
         Credentials(where: { _and: [{ password:{ _eq: "${password}"} }, {
           _or:[{email: { _eq: "${email}"}}, { phoneNumber:{ _eq:"${phoneNumber}"}}]
-        }]}){ id }
+        }]}){
+          id
+        }
       }
     `
 
     const {
-      Credentials: [credentials = {}] 
+      Credentials: [credentials] 
     } = await getRequestAct("GQL", { query });
 
     if(!credentials.id)
@@ -39,9 +42,9 @@ module.exports.handler = async (event) => {
 
     if (!returning.length) return fail({message: 'unauthorised', statusCode: 401})
     const { token } = returning[0] || {}
+
     return success({ token });
   } catch (error) {
-    console.log("login: ", error)
     return error
   }
 }
@@ -52,4 +55,5 @@ function validator(email, password, phoneNumber) {
 
   if(!password)
     throw fail({"password": "password cannot be blank."}, 401)
+
 }

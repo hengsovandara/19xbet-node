@@ -1,10 +1,10 @@
 {
-  "name": "GOTIFO-node",
+  "name": "247-node",
   "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "serverless offline -P 8080 -o 0.0.0.0",
+    "start": "HASURA_ENDPOINT=https://247khmer.com/v1/graphql serverless offline -P 8080 -o 0.0.0.0",
     "dev": "serverless offline -P 8081 -o 0.0.0.0",
     "cron": "serverless offline start",
     "test": "sls invoke test -f",
