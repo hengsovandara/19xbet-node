@@ -42,7 +42,7 @@ module.exports.handler = async (event) => {
     return success({ token });
   } catch (error) {
     console.log("login: ", error)
-    return error
+    return fail(error)
   }
 }
 
