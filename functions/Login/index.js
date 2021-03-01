@@ -23,7 +23,7 @@ module.exports.handler = async (event) => {
     } = await getRequestAct("GQL", { query });
 
     if(!credentials.id)
-      throw { message: "unauthorised", statusCode: 401}
+      throw { message: "phone number or pin is incorrect. please make sure that phone number is without 0", statusCode: 401}
 
     query = `
       mutation{
