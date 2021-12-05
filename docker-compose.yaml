@@ -9,6 +9,8 @@ services:
     image: hasura/graphql-engine:v1.2.2
     depends_on:
     - "postgres"
+    ports:
+    - "8080:8080"
     container_name: hasura-247kh
     restart: always
     environment:
@@ -32,17 +34,17 @@ services:
       HASURA_ACCESSKEY: pingkh
       BOT_TOKEN: 1135123290:AAHez7pFE4QX04VO_nBxqtNAlyuCs9EZn8Y
       CHAT_ID: 668438440
-  caddy:
-    image: abiosoft/caddy:0.11.0
-    depends_on:
-    - "graphql-engine"
-    restart: always
-    ports:
-    - "80:80"
-    - "443:443"
-    volumes:
-    - ./Caddyfile:/etc/Caddyfile
-    - caddy_certs:/root/.caddy
+  # caddy:
+  #   image: abiosoft/caddy:0.11.0
+  #   depends_on:
+  #   - "graphql-engine"
+  #   restart: always
+  #   ports:
+  #   - "80:80"
+  #   - "443:443"
+  #   volumes:
+  #   - ./Caddyfile:/etc/Caddyfile
+  #   - caddy_certs:/root/.caddy
 volumes:
   db_data:
   caddy_certs:

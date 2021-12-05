@@ -1,0 +1,554 @@
+{
+  "version": 2,
+  "tables": [
+    {
+      "table": {
+        "schema": "enum",
+        "name": "transaction_methods"
+      },
+      "select_permissions": [
+        {
+          "role": "anonymous",
+          "permission": {
+            "columns": [
+              "id",
+              "value",
+              "description"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "id",
+              "value",
+              "description"
+            ],
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "enum",
+        "name": "transaction_types"
+      },
+      "select_permissions": [
+        {
+          "role": "anonymous",
+          "permission": {
+            "columns": [
+              "id",
+              "value",
+              "description"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "description",
+              "id",
+              "value"
+            ],
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Categories"
+      },
+      "insert_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "check": {},
+            "columns": [
+              "banner",
+              "name",
+              "id"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "anonymous",
+          "permission": {
+            "columns": [
+              "banner",
+              "name",
+              "id"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "id",
+              "name",
+              "banner"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "banner",
+              "name",
+              "id"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Credentials"
+      },
+      "object_relationships": [
+        {
+          "name": "staff",
+          "using": {
+            "foreign_key_constraint_on": "staffId"
+          }
+        },
+        {
+          "name": "user",
+          "using": {
+            "foreign_key_constraint_on": "userId"
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "sessions",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "credentialId",
+              "table": {
+                "schema": "public",
+                "name": "Sessions"
+              }
+            }
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "createdAt",
+              "email",
+              "id",
+              "phoneNumber",
+              "staffId",
+              "userId",
+              "userName"
+            ],
+            "filter": {
+              "_or": [
+                {
+                  "staff": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                },
+                {
+                  "user": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Dashboards"
+      },
+      "select_permissions": [
+        {
+          "role": "anonymous",
+          "permission": {
+            "columns": [
+              "id",
+              "banner",
+              "index"
+            ],
+            "filter": {},
+            "allow_aggregations": true
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Informations"
+      },
+      "select_permissions": [
+        {
+          "role": "anonymous",
+          "permission": {
+            "columns": [
+              "id",
+              "phoneNumbers",
+              "email",
+              "facebook",
+              "twitter",
+              "youtube"
+            ],
+            "filter": {},
+            "allow_aggregations": true
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "News"
+      },
+      "object_relationships": [
+        {
+          "name": "staff",
+          "using": {
+            "foreign_key_constraint_on": "staffId"
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "anonymous",
+          "permission": {
+            "columns": [
+              "id",
+              "title",
+              "content",
+              "imageUrl",
+              "staffId",
+              "createdAt"
+            ],
+            "filter": {},
+            "allow_aggregations": true
+          }
+        },
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "id",
+              "title",
+              "content",
+              "imageUrl",
+              "staffId",
+              "createdAt"
+            ],
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Sessions"
+      },
+      "object_relationships": [
+        {
+          "name": "credential",
+          "using": {
+            "foreign_key_constraint_on": "credentialId"
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "id",
+              "token",
+              "credentialId",
+              "createdAt"
+            ],
+            "filter": {
+              "credential": {
+                "staffId": {
+                  "_eq": "X-Hasura-User-Id"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Staffs"
+      },
+      "object_relationships": [
+        {
+          "name": "credential",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "Credentials"
+              },
+              "column_mapping": {
+                "id": "staffId"
+              }
+            }
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "anonymous",
+          "permission": {
+            "columns": [
+              "name"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "id",
+              "name",
+              "phoneNumber",
+              "email",
+              "createdAt",
+              "role",
+              "photo"
+            ],
+            "filter": {
+              "role": {
+                "_eq": "x-hasura-role"
+              }
+            },
+            "allow_aggregations": true
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "phoneNumber",
+              "email",
+              "name",
+              "photo",
+              "role",
+              "createdAt",
+              "id"
+            ],
+            "filter": {
+              "role": {
+                "_eq": "x-hasura-role"
+              }
+            },
+            "check": {
+              "role": {
+                "_eq": "x-hasura-role"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Transactions"
+      },
+      "object_relationships": [
+        {
+          "name": "staff",
+          "using": {
+            "foreign_key_constraint_on": "staffId"
+          }
+        },
+        {
+          "name": "user",
+          "using": {
+            "foreign_key_constraint_on": "userId"
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "index",
+              "method",
+              "amount",
+              "imageUrl",
+              "status",
+              "type",
+              "acceptedAt",
+              "createdAt",
+              "id",
+              "staffId",
+              "userId"
+            ],
+            "filter": {},
+            "allow_aggregations": true
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "index",
+              "method",
+              "amount",
+              "imageUrl",
+              "status",
+              "type",
+              "acceptedAt",
+              "createdAt",
+              "id",
+              "staffId",
+              "userId"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ],
+      "event_triggers": [
+        {
+          "name": "userRequest",
+          "definition": {
+            "enable_manual": true,
+            "insert": {
+              "columns": "*"
+            }
+          },
+          "retry_conf": {
+            "num_retries": 0,
+            "interval_sec": 10,
+            "timeout_sec": 60
+          },
+          "webhook_from_env": "NOTIFICATION_NODE"
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "Users"
+      },
+      "object_relationships": [
+        {
+          "name": "credential",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "Credentials"
+              },
+              "column_mapping": {
+                "id": "userId"
+              }
+            }
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "transactions",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "userId",
+              "table": {
+                "schema": "public",
+                "name": "Transactions"
+              }
+            }
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "createdAt",
+              "email",
+              "id",
+              "name",
+              "phoneNumber",
+              "walletId"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "staff",
+          "permission": {
+            "columns": [
+              "walletId"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ],
+      "event_triggers": [
+        {
+          "name": "userRegister",
+          "definition": {
+            "enable_manual": true,
+            "insert": {
+              "columns": "*"
+            }
+          },
+          "retry_conf": {
+            "num_retries": 0,
+            "interval_sec": 10,
+            "timeout_sec": 60
+          },
+          "webhook_from_env": "NOTIFICATION_NODE"
+        }
+      ]
+    }
+  ]
+}
