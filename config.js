@@ -7,5 +7,5 @@ module.exports.HASURA_ENDPOINT =
 module.exports.HASURA_ACCESSKEY = process.env.HASURA_ACCESSKEY || "pingkh";
 module.exports.BOT_TOKEN = process.env.BOT_TOKEN || "5074802843:AAF0PSVXUJIqA2cpLVN4RnYvlSjgzUX6GZc";
 module.exports.REGISTER_CHAT_ID = process.env.REGISTER_CHAT_ID || "1001790840024";
-module.exports.DEPOSIT_CHAT_ID = process.env.DEPOSIT_CHAT_ID || "674276584";
-module.exports.WITHDRAW_CHAT_ID = process.env.WITHDRAW_CHAT_ID || "686341984";
+module.exports.DEPOSIT_CHAT_ID = process.env.DEPOSIT_CHAT_ID || "1001612919233";
+module.exports.WITHDRAW_CHAT_ID = process.env.WITHDRAW_CHAT_ID || "1001626303211";

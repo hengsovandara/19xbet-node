@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "HASURA_ENDPOINT=https://247khmer.com/v1/graphql serverless offline -P 8080 -o 0.0.0.0",
+    "start": "HASURA_ENDPOINT=http://139.59.108.49/v1/graphql serverless offline -P 8080 -o 0.0.0.0",
     "prod": "serverless offline -P 8080 -o 0.0.0.0",
     "dev": "serverless offline -P 8081 -o 0.0.0.0",
     "cron": "serverless offline start",
