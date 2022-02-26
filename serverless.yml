@@ -38,5 +38,11 @@ functions:
       - http:
           path: api/notify
           method: post
+  rebet-api:
+    handler: functions/Rebet/index.handler
+    events:
+      - http:
+          path: api/request-report
+          method: post
 plugins:
   - serverless-offline
