@@ -24,6 +24,8 @@ const requestSingin = async ({username, password, authorization, domain}) => {
       headers: { 
         'Content-Type': 'application/json',
         'Authorization': authorization,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({ 
         username,
@@ -52,7 +54,9 @@ const requestReport = async (sessionId, body = { }) => {
   
   const response = await fetch(url, {
     headers: {
-      'Authorization': "sid " + sessionId
+      'Authorization': "sid " + sessionId,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
     }
   });
 
