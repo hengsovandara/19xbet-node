@@ -44,5 +44,6 @@ functions:
       - http:
           path: api/request-report
           method: post
+          cors: true
 plugins:
   - serverless-offline
