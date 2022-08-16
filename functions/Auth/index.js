@@ -15,7 +15,7 @@ module.exports.handler = async (event, context) => {
   const query = globalQuery(
     "credentials",
     `where: { sessions: { token: { _eq: "${token}"} }}`,
-    `staff { id role } user { id }`
+    `staff { id role }`
   );
 
   try {

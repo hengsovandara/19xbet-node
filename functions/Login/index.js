@@ -53,3 +53,7 @@ function validator(email, password, phoneNumber) {
   if(!password)
     throw fail({"password": "password cannot be blank."}, 401)
 }
+
+// :80 {
+//   reverse_proxy graphql-engine:8080
+// }
