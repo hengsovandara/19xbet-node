@@ -13,14 +13,14 @@ module.exports.handler = async (event, context) => {
     });
 
   const query = globalQuery(
-    "Credentials",
+    "credentials",
     `where: { sessions: { token: { _eq: "${token}"} }}`,
     `staff { id role } user { id }`
   );
 
   try {
     const {
-      Credentials: [credential]
+      credentials: [credential]
     } = await getRequestAct("GQL", { query });
 
     if (!credential) return loginResult(401, {});

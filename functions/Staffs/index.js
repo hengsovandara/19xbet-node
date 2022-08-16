@@ -8,9 +8,9 @@ module.exports.handler = async (event, context) => {
 
     const query = `
       mutation($values: [Staffs_insert_input!]! ){
-        insert_Staffs(objects: $values
+        insert_staffs(objects: $values
         on_conflict: {
-          constraint: Staffs_pkey, 
+          constraint: staffs_pkey, 
           update_columns: [name email address role phoneNumbers firebaseUID]
         }){
           returning {

@@ -12,14 +12,14 @@ module.exports.handler = async (event) => {
 
     let query = `
       query{
-        Credentials(where: { _and: [{ password:{ _eq: "${password}"} }, {
+        credentials(where: { _and: [{ password:{ _eq: "${password}"} }, {
           _or:[{email: { _eq: "${email}"}}, { phoneNumber:{ _eq:"${phoneNumber}"}}]
         }]}){ id }
       }
     `
 
     const {
-      Credentials: [credentials = {}] 
+      credentials: [credentials = {}] 
     } = await getRequestAct("GQL", { query });
 
     if(!credentials.id)
@@ -27,14 +27,14 @@ module.exports.handler = async (event) => {
 
     query = `
       mutation{
-        insert_Sessions(objects: { credentialId: "${credentials.id}"}){
+        insert_sessions(objects: { credentialId: "${credentials.id}"}){
           returning { token }
         }
       }
     `;
 
     const {
-      insert_Sessions: { returning  }
+      insert_sessions: { returning  }
     } = await getRequestAct("GQL", { query });
 
     if (!returning.length) return fail({message: 'unauthorised', statusCode: 401})

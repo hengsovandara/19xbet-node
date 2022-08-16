@@ -25,25 +25,25 @@ functions:
           path: api/user/auth
           method: post
           cors: true
-  user/request:
-    handler: functions/Users/request.handler
-    events:
-      - http:
-          path: api/user/request
-          method: post
-          cors: true
-  notification:
-    handler: functions/Notification/sendNotification.handler
-    events:
-      - http:
-          path: api/notify
-          method: post
-  rebet-api:
-    handler: functions/Rebet/index.handler
-    events:
-      - http:
-          path: api/request-report
-          method: post
-          cors: true
+  # user/request:
+  #   handler: functions/Users/request.handler
+  #   events:
+  #     - http:
+  #         path: api/user/request
+  #         method: post
+  #         cors: true
+  # notification:
+  #   handler: functions/Notification/sendNotification.handler
+  #   events:
+  #     - http:
+  #         path: api/notify
+  #         method: post
+  # rebet-api:
+  #   handler: functions/Rebet/index.handler
+  #   events:
+  #     - http:
+  #         path: api/request-report
+  #         method: post
+  #         cors: true
 plugins:
   - serverless-offline
