@@ -8,7 +8,6 @@ module.exports.handler = async (event) => {
   let { email, phoneNumber = '', password } = body;
 
   try {
-    phoneNumber = phoneNumber && phoneNumber.replace(/^0/, '')
     validator(email, password, phoneNumber);
 
     let query = `

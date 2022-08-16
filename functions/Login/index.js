@@ -7,7 +7,7 @@ module.exports.handler = async (event) => {
   let { email, phoneNumber = '', password } = body;
 
   try {
-    phoneNumber = phoneNumber && phoneNumber.replace(/^0/, '')
+    // phoneNumber = phoneNumber && phoneNumber.replace(/^0/, '')
     validator(email, password, phoneNumber);
 
     let query = `
@@ -21,9 +21,9 @@ module.exports.handler = async (event) => {
     const {
       credentials: [credentials = {}] 
     } = await getRequestAct("GQL", { query });
-
+    console.log({credentials})
     if(!credentials.id)
-      throw { message: "phone number or pin is incorrect. please make sure that phone number is without 0", statusCode: 401}
+      throw { message: "phone number or pin is incorrect. please check your phone number and password again.", statusCode: 401}
 
     query = `
       mutation{
